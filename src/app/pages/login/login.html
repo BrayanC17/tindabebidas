@@ -1,0 +1,37 @@
+<div class="login-container">
+  <div class="login-card">
+    <h1>Iniciar sesión</h1>
+    <p class="login-subtitle">Ingresa a tu cuenta de TindaBebidas</p>
+
+    <form (ngSubmit)="iniciarSesion()">
+      <label for="correo">Correo electrónico</label>
+      <input
+        id="correo"
+        type="email"
+        placeholder="tucorreo@ejemplo.com"
+        [value]="correo()"
+        (input)="correo.set($any($event.target).value)"
+        required
+      />
+
+      <label for="contrasena">Contraseña</label>
+      <input
+        id="contrasena"
+        type="password"
+        placeholder="••••••••"
+        [value]="contrasena()"
+        (input)="contrasena.set($any($event.target).value)"
+        required
+      />
+
+      <button type="submit">Ingresar</button>
+    </form>
+
+    <p class="login-footer">
+      ¿No tienes cuenta? <a routerLink="/registro">Regístrate</a>
+      <br>
+      <br>
+      ¿Olvidaste tu contraseña? <a href="#">Recuperar</a>
+    </p>
+  </div>
+</div>

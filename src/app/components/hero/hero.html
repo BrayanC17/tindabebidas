@@ -1,0 +1,18 @@
+<section class="hero">
+  <h1> Encuentra tu <strong>bebida</strong> ideal</h1>
+
+  <div class="hero-search">
+    <span class="pin-icon">📍</span>
+    <input
+    type="text"
+    placeholder="¿Donde te gustaría recibir tu pedido?"
+    [value]="ubicacion()"
+    (input)="ubicacion.set($any($event.target).value)"
+    />
+  </div>
+
+  <div class="hero-links">
+    <span> 📍 Usa tu ubicacion actual</span>
+    <span> <a routerLink="/login">iniciar sesión</a> para ver tus direcciones</span>
+  </div>
+</section>

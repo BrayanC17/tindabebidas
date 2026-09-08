@@ -1,0 +1,54 @@
+<div class="registro-container">
+  <div class="registro-card">
+    <h1>Crea tu cuenta</h1>
+    <p class="registro-subtitle">Regístrate en TindaBebidas</p>
+
+    <form (ngSubmit)="registrar()">
+      <label for="nombre">Nombre completo</label>
+      <input
+        id="nombre"
+        type="text"
+        placeholder="Tu nombre"
+        [value]="nombre()"
+        (input)="nombre.set($any($event.target).value)"
+        required
+      />
+
+      <label for="correo">Correo electrónico</label>
+      <input
+        id="correo"
+        type="email"
+        placeholder="tucorreo@ejemplo.com"
+        [value]="correo()"
+        (input)="correo.set($any($event.target).value)"
+        required
+      />
+
+      <label for="contrasena">Contraseña</label>
+      <input
+        id="contrasena"
+        type="password"
+        placeholder="••••••••"
+        [value]="contrasena()"
+        (input)="contrasena.set($any($event.target).value)"
+        required
+      />
+
+      <label for="confirmarContrasena">Confirmar contraseña</label>
+      <input
+        id="confirmarContrasena"
+        type="password"
+        placeholder="••••••••"
+        [value]="confirmarContrasena()"
+        (input)="confirmarContrasena.set($any($event.target).value)"
+        required
+      />
+
+      <button type="submit">Registrarme</button>
+    </form>
+
+    <p class="registro-footer">
+      ¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a>
+    </p>
+  </div>
+</div>

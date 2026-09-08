@@ -1,0 +1,22 @@
+<nav class="navbar">
+  <div class="navbar-left">
+    <span class="menu-icon">☰</span>
+    <span class="logo">TindaBebidas</span>
+    <span class="ubicacion">{{ ciudad() }}</span>
+
+    <div class="navbar-search">
+      <input
+        type="text"
+        placeholder="Buscar productos..."
+        [value]="busqueda()"
+        (input)="busqueda.set($any($event.target).value)"
+      />
+      <span class="search-icon">🔍</span>
+    </div>
+  </div>
+
+  <div class="navbar-right">
+    <span routerLink="/login" class="ingreso">👤 Ingreso</span>
+    <span class="carrito">🛒</span>
+  </div>
+</nav>

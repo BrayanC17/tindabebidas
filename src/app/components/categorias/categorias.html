@@ -1,0 +1,17 @@
+<section class="categorias">
+  <h2>¿Qué se te antoja?</h2>
+
+  <div class="categorias-grid">
+    @for (cat of categorias(); track cat.nombre) {
+      <div
+        class="categoria-card"
+        [class.seleccionada]="seleccionada() === cat.nombre"
+        [style.background]="cat.color"
+        (click)="seleccionar(cat.nombre)"
+      >
+        <span class="categoria-emoji">{{ cat.emoji }}</span>
+        <p class="categoria-nombre">{{ cat.nombre }}</p>
+      </div>
+    }
+  </div>
+</section>

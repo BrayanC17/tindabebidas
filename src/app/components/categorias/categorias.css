@@ -1,0 +1,48 @@
+.categorias {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.categorias h2 {
+  margin-bottom: 25px;
+  color: #333;
+}
+
+.categorias-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.categoria-card {
+  width: 150px;
+  height: 130px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.categoria-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.categoria-card.seleccionada {
+  outline: 4px solid #333;
+  outline-offset: 2px;
+}
+
+.categoria-emoji {
+  font-size: 2.5rem;
+}
+
+.categoria-nombre {
+  color: white;
+  font-weight: bold;
+  margin-top: 8px;
+}
