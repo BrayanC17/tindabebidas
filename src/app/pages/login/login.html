@@ -3,6 +3,10 @@
     <h1>Iniciar sesión</h1>
     <p class="login-subtitle">Ingresa a tu cuenta de TindaBebidas</p>
 
+    @if (error()) {
+      <p class="login-error">{{ error() }}</p>
+    }
+
     <form (ngSubmit)="iniciarSesion()">
       <label for="correo">Correo electrónico</label>
       <input
@@ -24,14 +28,13 @@
         required
       />
 
-      <button type="submit">Ingresar</button>
+      <button type="submit" [disabled]="cargando()">
+        {{ cargando() ? 'Ingresando...' : 'Ingresar' }}
+      </button>
     </form>
 
     <p class="login-footer">
       ¿No tienes cuenta? <a routerLink="/registro">Regístrate</a>
-      <br>
-      <br>
-      ¿Olvidaste tu contraseña? <a href="#">Recuperar</a>
     </p>
   </div>
 </div>

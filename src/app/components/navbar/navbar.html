@@ -16,7 +16,12 @@
   </div>
 
   <div class="navbar-right">
-    <span routerLink="/login" class="ingreso">👤 Ingreso</span>
-    <span class="carrito">🛒</span>
-  </div>
+  @if (nombreUsuario()) {
+    <span class="usuario-nombre">👤 {{ nombreUsuario() }}</span>
+    <button class="btn-cerrar-sesion" (click)="cerrarSesion()">Salir</button>
+  } @else {
+    <a routerLink="/login" class="ingreso">👤 Ingreso</a>
+  }
+  <span class="carrito">🛒</span>
+</div>
 </nav>

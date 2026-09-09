@@ -1,0 +1,161 @@
+<div class="admin-layout">
+  <!-- Menú lateral -->
+  <aside class="admin-sidebar" [class.abierto]="menuAbierto()">
+    <button class="cerrar-menu" (click)="toggleMenu()">✕</button>
+    <h2>Panel Vendedor</h2>
+    <nav>
+      <button
+        class="menu-item"
+        [class.activo]="vistaActual() === 'lista'"
+        (click)="cambiarVista('lista')"
+      >
+        📦 Mis productos
+      </button>
+      <button
+        class="menu-item"
+        [class.activo]="vistaActual() === 'agregar'"
+        (click)="cambiarVista('agregar')"
+      >
+        ➕ Agregar producto
+      </button>
+    </nav>
+  </aside>
+
+  <!-- Contenido principal -->
+  <div class="admin-content">
+    <button class="abrir-menu" (click)="toggleMenu()">☰</button>
+
+    @if (vistaActual() === 'lista') {
+      <h1>Mis productos</h1>
+
+      <div class="productos-grid">
+        @for (producto of productos$ | async; track producto.nombre) {
+          <div class="producto-card">
+            @if (producto.imagenUrl) {
+              <img [src]="producto.imagenUrl" [alt]="producto.nombre" />
+            }
+            <h3>{{ producto.nombre }}</h3>
+            <p class="producto-categoria">{{ producto.categoria }}</p>
+            <p class="producto-precio">${{ producto.precio }}</p>
+            <p class="producto-stock">Stock: {{ producto.stock }}</p>
+          </div>
+        } @empty {
+          <p class="sin-productos">Aún no has agregado productos.</p>
+        }
+      </div>
+    }
+
+    @if (vistaActual() === 'agregar') {
+      <h1>Agregar producto</h1>
+
+      @if (mensaje()) {
+        <p class="admin-mensaje" [class.exito]="mensaje().includes('éxito')">
+          {{ mensaje() }}
+        </p>
+      }
+
+      <form (ngSubmit)="agregarProducto()" class="form-producto">
+        <label for="nombre">Nombre del producto</label>
+        <input
+          id="nombre"
+          type="text"
+          placeholder="Ej: Club Colombia"
+          [value]="nombre()"
+          (input)="nombre.set($any($event.target).value)"
+        />
+
+        <label for="categoria">Categoría</label>
+        <select
+          id="categoria"
+          [value]="categoria()"
+          (change)="categoria.set($any($event.target).value)"
+        >
+          @for (cat of categorias; track cat) {
+            <option [value]="cat">{{ cat }}</option>
+          }
+        </select>
+
+        <label for="precio">Precio (COP)</label>
+        <input
+          id="precio"
+          type="number"
+          placeholder="Ej: 4500"
+          [value]="precio()"
+          (input)="precio.set(+$any($event.target).value)"
+        />
+
+        <label for="stock">Stock disponible</label>
+        <input
+          id="stock"
+          type="number"
+          placeholder="Ej: 50"
+          [value]="stock()"
+          (input)="stock.set(+$any($event.target).value)"
+        />
+
+        <label>Imagen del producto</label>
+
+<div class="modo-imagen-selector">
+  <button
+    type="button"
+    class="modo-btn"
+    [class.activo]="modoImagen() === 'archivo'"
+    (click)="cambiarModoImagen('archivo')"
+  >
+    📁 Subir desde mi dispositivo
+  </button>
+  <button
+    type="button"
+    class="modo-btn"
+    [class.activo]="modoImagen() === 'url'"
+    (click)="cambiarModoImagen('url')"
+  >
+    🔗 Pegar un link
+  </button>
+</div>
+
+@if (modoImagen() === 'archivo') {
+  <input
+    id="imagenArchivo"
+    type="file"
+    accept="image/*"
+    (change)="onArchivoSeleccionado($event)"
+  />
+
+  @if (procesandoImagen()) {
+    <p class="procesando-texto">Procesando imagen...</p>
+  }
+
+  @if (imagenBase64()) {
+    <img [src]="imagenBase64()" alt="Vista previa" class="preview-imagen" />
+  }
+} @else {
+  <input
+    id="imagenUrlTexto"
+    type="text"
+    placeholder="https://..."
+    [value]="imagenUrlTexto()"
+    (input)="imagenUrlTexto.set($any($event.target).value)"
+  />
+
+  @if (imagenUrlTexto()) {
+    <img [src]="imagenUrlTexto()" alt="Vista previa" class="preview-imagen" />
+  }
+}
+
+        <label for="descripcion">Descripción</label>
+        <textarea
+          id="descripcion"
+          rows="3"
+          placeholder="Describe el producto..."
+          [value]="descripcion()"
+          (input)="descripcion.set($any($event.target).value)"
+        ></textarea>
+
+        <button type="submit" [disabled]="cargando()">
+          {{ cargando() ? 'Guardando...' : 'Agregar producto' }}
+        </button>
+      </form>
+    }
+  </div>
+</div>

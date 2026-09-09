@@ -3,6 +3,29 @@
     <h1>Crea tu cuenta</h1>
     <p class="registro-subtitle">Regístrate en TindaBebidas</p>
 
+    @if (error()) {
+      <p class="registro-error">{{ error() }}</p>
+    }
+
+    <div class="rol-selector">
+      <button
+        type="button"
+        class="rol-btn"
+        [class.activo]="rol() === 'cliente'"
+        (click)="seleccionarRol('cliente')"
+      >
+        🛒 Quiero comprar
+      </button>
+      <button
+        type="button"
+        class="rol-btn"
+        [class.activo]="rol() === 'vendedor'"
+        (click)="seleccionarRol('vendedor')"
+      >
+        🏪 Quiero vender
+      </button>
+    </div>
+
     <form (ngSubmit)="registrar()">
       <label for="nombre">Nombre completo</label>
       <input
@@ -44,7 +67,18 @@
         required
       />
 
-      <button type="submit">Registrarme</button>
+      <label class="checkbox-label">
+        <input
+          type="checkbox"
+          [checked]="mayorDeEdad()"
+          (change)="mayorDeEdad.set($any($event.target).checked)"
+        />
+        Confirmo que soy mayor de 18 años
+      </label>
+
+      <button type="submit" [disabled]="cargando()">
+        {{ cargando() ? 'Creando cuenta...' : 'Registrarme' }}
+      </button>
     </form>
 
     <p class="registro-footer">

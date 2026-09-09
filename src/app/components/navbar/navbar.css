@@ -42,3 +42,22 @@
   gap: 20px;
   color: #333;
 }
+
+.usuario-nombre {
+  font-weight: 500;
+  color: #333;
+}
+
+.btn-cerrar-sesion {
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.btn-cerrar-sesion:hover {
+  border-color: #d62828;
+  color: #d62828;
+}
