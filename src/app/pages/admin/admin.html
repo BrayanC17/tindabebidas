@@ -102,7 +102,15 @@
     [class.activo]="modoImagen() === 'archivo'"
     (click)="cambiarModoImagen('archivo')"
   >
-    📁 Subir desde mi dispositivo
+    📁 Subir archivo
+  </button>
+  <button
+    type="button"
+    class="modo-btn"
+    [class.activo]="modoImagen() === 'camara'"
+    (click)="cambiarModoImagen('camara')"
+  >
+    📷 Tomar foto
   </button>
   <button
     type="button"
@@ -110,9 +118,19 @@
     [class.activo]="modoImagen() === 'url'"
     (click)="cambiarModoImagen('url')"
   >
-    🔗 Pegar un link
+    🔗 Pegar link
   </button>
 </div>
+
+@if (modoImagen() === 'camara') {
+  <button type="button" class="btn-tomar-foto" (click)="tomarFotoConCamara()">
+    📷 Abrir cámara
+  </button>
+
+  @if (imagenBase64()) {
+    <img [src]="imagenBase64()" alt="Vista previa" class="preview-imagen" />
+  }
+}
 
 @if (modoImagen() === 'archivo') {
   <input

@@ -61,3 +61,14 @@
   border-color: #d62828;
   color: #d62828;
 }
+
+.link-admin {
+  color: #d62828;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.link-admin:hover {
+  text-decoration: underline;
+}

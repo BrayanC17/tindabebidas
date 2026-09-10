@@ -18,6 +18,11 @@
   <div class="navbar-right">
   @if (nombreUsuario()) {
     <span class="usuario-nombre">👤 {{ nombreUsuario() }}</span>
+
+    @if (rolUsuario() === 'vendedor') {
+      <a routerLink="/admin" class="link-admin">🏪 Mi panel</a>
+    }
+
     <button class="btn-cerrar-sesion" (click)="cerrarSesion()">Salir</button>
   } @else {
     <a routerLink="/login" class="ingreso">👤 Ingreso</a>

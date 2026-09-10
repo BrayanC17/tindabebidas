@@ -198,6 +198,21 @@
   margin-top: 5px;
 }
 
+.btn-tomar-foto {
+  padding: 12px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  margin-top: 5px;
+}
+
+.btn-tomar-foto:hover {
+  background: #555;
+}
+
 /* Responsive: menú lateral se oculta en móvil, aparece botón hamburguesa */
 @media (max-width: 768px) {
   .admin-sidebar {

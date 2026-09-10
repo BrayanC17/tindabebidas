@@ -4,6 +4,7 @@ import { AsyncPipe } from '@angular/common';
 import { ProductosService, Producto } from '../../services/productos';
 import { archivoABase64Comprimido } from '../../utils/imagen';
 import { Observable } from 'rxjs';
+import { CamaraService } from '../../services/camara';
 
 @Component({
   selector: 'app-admin',
@@ -16,6 +17,7 @@ export class Admin {
 
   vistaActual = signal<'lista' | 'agregar'>('lista');
   menuAbierto = signal(false);
+  private camaraService = inject(CamaraService);
 
   productos$: Observable<Producto[]> = this.productosService.obtenerProductos();
 
@@ -25,7 +27,7 @@ export class Admin {
   descripcion = signal('');
   stock = signal<number | null>(null);
 
-  modoImagen = signal<'archivo' | 'url'>('archivo');
+  modoImagen = signal<'archivo' | 'url' | 'camara'>('archivo');
   imagenBase64 = signal<string | null>(null);
   imagenUrlTexto = signal('');
   procesandoImagen = signal(false);
@@ -43,11 +45,11 @@ export class Admin {
     this.menuAbierto.set(!this.menuAbierto());
   }
 
-  cambiarModoImagen(modo: 'archivo' | 'url') {
-    this.modoImagen.set(modo);
-    this.imagenBase64.set(null);
-    this.imagenUrlTexto.set('');
-  }
+  cambiarModoImagen(modo: 'archivo' | 'url' | 'camara') {
+  this.modoImagen.set(modo);
+  this.imagenBase64.set(null);
+  this.imagenUrlTexto.set('');
+}
 
   async onArchivoSeleccionado(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -65,6 +67,16 @@ export class Admin {
       }
     }
   }
+
+  async tomarFotoConCamara() {
+  try {
+    const base64 = await this.camaraService.tomarFoto();
+    this.imagenBase64.set(base64);
+  } catch (err) {
+    this.mensaje.set('No se pudo acceder a la cámara');
+    console.error(err);
+  }
+}
 
   private obtenerImagenFinal(): string {
     if (this.modoImagen() === 'archivo') {
