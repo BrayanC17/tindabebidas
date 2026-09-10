@@ -30,7 +30,7 @@ export class Registro {
   async registrar() {
     this.error.set('');
 
-    alert('Botón presionado, iniciando registro...');   // 👈 línea temporal de prueba
+    alert('Botón presionado, iniciando registro...');
     this.error.set('');
 
     if (this.contrasena().length < 6) {
