@@ -49,13 +49,14 @@
 }
 
 .login-card input:focus {
-  border-color: #d62828;
+  border-color: var(--color-dorado);
+
 }
 
 .login-card button {
   margin-top: 25px;
   padding: 12px;
-  background: #d62828;
+  background: var(--color-vino);
   color: white;
   border: none;
   border-radius: 8px;
@@ -65,7 +66,7 @@
 }
 
 .login-card button:hover {
-  background: #b91f1f;
+  background: var(--color-morado);
 }
 
 .login-footer {

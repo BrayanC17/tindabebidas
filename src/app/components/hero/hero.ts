@@ -1,5 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { UbicacionService } from '../../services/ubicacion';
 
 @Component({
   imports: [RouterLink],
@@ -8,5 +9,5 @@ import { RouterLink } from '@angular/router';
   templateUrl: './hero.html',
 })
 export class Hero {
-  ubicacion = signal('');
+  ubicacionService = inject(UbicacionService);
 }

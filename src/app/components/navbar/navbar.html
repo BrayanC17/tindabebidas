@@ -1,9 +1,13 @@
 <nav class="navbar">
   <div class="navbar-left">
-    <span class="menu-icon">☰</span>
-    <span class="logo">TindaBebidas</span>
-    <span class="ubicacion">{{ ciudad() }}</span>
-
+    <div class="logo-container">
+      <img src="logo.png" alt="TinBebidas" class="logo-img" />
+      <span class="logo-texto">TinBebidas</span>
+    </div>
+    <button class="ubicacion-btn" (click)="detectarUbicacion()" [disabled]="cargandoUbicacion()">
+      <i class="fa-solid fa-location-dot"></i>
+      {{ cargandoUbicacion() ? 'Detectando...' : ubicacionService.ciudad() }}
+    </button>
     <div class="navbar-search">
       <input
         type="text"
@@ -11,7 +15,7 @@
         [value]="busqueda()"
         (input)="busqueda.set($any($event.target).value)"
       />
-      <span class="search-icon">🔍</span>
+      <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
     </div>
   </div>
 
@@ -25,8 +29,10 @@
 
     <button class="btn-cerrar-sesion" (click)="cerrarSesion()">Salir</button>
   } @else {
-    <a routerLink="/login" class="ingreso">👤 Ingreso</a>
+    <a routerLink="/login" class="ingreso">
+      <span class="icono-usuario"><i class="fa-solid fa-user"></i></span>
+    </a>
   }
-  <span class="carrito">🛒</span>
+  <span class="carrito"><i class="fa-solid fa-cart-shopping"></i></span>
 </div>
 </nav>

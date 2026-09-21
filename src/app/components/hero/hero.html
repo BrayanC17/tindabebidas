@@ -1,18 +1,21 @@
 <section class="hero">
-  <h1> Encuentra tu <strong>bebida</strong> ideal</h1>
+  <img src="cerveza.gif" alt="" class="hero-fondo-gif" />
+  <div class="hero-overlay"></div>
 
-  <div class="hero-search">
-    <span class="pin-icon">📍</span>
-    <input
-    type="text"
-    placeholder="¿Donde te gustaría recibir tu pedido?"
-    [value]="ubicacion()"
-    (input)="ubicacion.set($any($event.target).value)"
-    />
-  </div>
+  <div class="hero-contenido">
+    <h1>Encuentra tu <strong>bebida</strong> ideal</h1>
 
-  <div class="hero-links">
-    <span> 📍 Usa tu ubicacion actual</span>
-    <span> <a routerLink="/login">iniciar sesión</a> para ver tus direcciones</span>
+    <div class="hero-search">
+
+      <input
+        type="text"
+        placeholder="¿Dónde te gustaría pedir tu pedido?"
+        (input)="ubicacionService.ciudad.set($any($event.target).value)"
+      />
+    </div>
+
+    <div class="hero-links">
+      <span><i class="fa-solid fa-location-dot"></i> Usa tu ubicación actual</span>
+    </div>
   </div>
 </section>

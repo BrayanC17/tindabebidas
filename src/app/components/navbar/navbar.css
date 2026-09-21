@@ -4,7 +4,7 @@
   justify-content: space-between;
   padding: 10px 20px;
   background: white;
-  border-bottom: 3px solid #ffb11f;
+  border-bottom: 3px solid var(--color-dorado);
 }
 
 .navbar-left {
@@ -14,7 +14,7 @@
 }
 
 .logo {
-  color: #ffb11f;
+  color: var(--color-vino);
   font-weight: bold;
   font-size: 1.4rem;
 }
@@ -72,3 +72,106 @@
 .link-admin:hover {
   text-decoration: underline;
 }
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-img {
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+}
+
+.logo-texto {
+  color: #5c1a1a;
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.ingreso {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: #333;
+}
+
+.icono-usuario {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  color: #555;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.ingreso:hover .icono-usuario {
+  background: var(--color-crema);
+  color: var(--color-vino);
+}
+
+.search-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #888;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.search-icon:hover {
+  background: var(--color-crema);
+  color: var(--color-morado);
+}
+
+.carrito {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #888;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.carrito:hover {
+  background: var(--color-crema);
+  color: var(--color-vino);
+}
+
+.ubicacion-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #333;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.ubicacion-btn:hover {
+  background: var(--color-crema);
+  color: var(--color-vino);
+}
+
+
+.ubicacion-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
