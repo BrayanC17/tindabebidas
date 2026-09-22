@@ -19,7 +19,11 @@
 .registro-card h1 {
   font-size: 1.6rem;
   margin-bottom: 5px;
-  color: #333;
+  color: var(--color-vino);
+}
+
+.registro-card input:focus {
+  border-color: var(--color-dorado);
 }
 
 .registro-subtitle {
@@ -48,31 +52,26 @@
   outline: none;
 }
 
-.registro-card input:focus {
-  border-color: #d62828;
-}
-
 .registro-card button {
   margin-top: 25px;
   padding: 12px;
-  background: #d62828;
+  background: var(--color-vino);
   color: white;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
+  transition: background 0.2s ease;
 }
 
 .registro-card button:hover {
-  background: #b91f1f;
+  background: var(--color-morado);
 }
 
-.registro-footer {
-  margin-top: 20px;
-  text-align: center;
-  font-size: 0.85rem;
-  color: #666;
+.registro-footer a {
+  color: var(--color-vino);
+  font-weight: bold;
 }
 
 .registro-footer a {
@@ -92,32 +91,70 @@
 
 .rol-selector {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 25px;
 }
 
-.rol-btn {
+.rol-card {
   flex: 1;
-  padding: 12px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  background: white;
-  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 18px 12px;
+  border: 2px solid var(--color-dorado);
+  border-radius: 12px;
+  background: #fdfbf5;
   cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease;
 }
 
-.rol-btn:hover {
-  border-color: #dacfcf;
+.rol-card:hover {
+  background: #fdf6e8;
 }
 
-.rol-btn.activo {
-  background: #d62828;
-  border-color: #d62828;
+.rol-icono {
+  font-size: 1.8rem;
   color: white;
+  margin-bottom: 4px;
+  transition: color 0.2s ease;
+}
+
+.rol-titulo {
   font-weight: bold;
+  font-size: 0.95rem;
+  color: white;
+}
+
+.rol-descripcion {
+  font-size: 0.75rem;
+  color: white;
+  text-align: center;
+}
+
+.rol-card.activo {
+  background: white;
+  box-shadow: 0 4px 12px rgba(92, 26, 26, 0.15);
+  position: relative;
+}
+
+.rol-card.activo::after {
+  content: '\f00c';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  color: var(--color-vino);
+  font-size: 0.9rem;
+}
+
+.rol-card.activo .rol-icono {
+  color: var(--color-vino);
+}
+
+.rol-card.activo .rol-titulo {
+  color: var(--color-vino);
 }
 
 .checkbox-label {

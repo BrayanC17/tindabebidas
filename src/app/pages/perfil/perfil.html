@@ -1,0 +1,82 @@
+<div class="perfil-container">
+  <div class="perfil-card">
+    <h1>Editar perfil</h1>
+
+    @if (mensaje()) {
+      <p class="perfil-mensaje" [class.exito]="mensaje().includes('éxito')">
+        {{ mensaje() }}
+      </p>
+    }
+
+    <div class="foto-perfil-seccion">
+      @if (fotoPerfil()) {
+        <img [src]="fotoPerfil()" alt="Foto de perfil" class="foto-preview" />
+      } @else {
+        <div class="foto-preview foto-placeholder">
+          <i class="fa-solid fa-user"></i>
+        </div>
+      }
+
+      <label class="btn-cambiar-foto">
+        <i class="fa-solid fa-camera"></i> Cambiar foto
+        <input type="file" accept="image/*" (change)="onFotoSeleccionada($event)" hidden />
+      </label>
+
+      @if (procesandoFoto()) {
+        <p class="procesando-texto">Procesando imagen...</p>
+      }
+    </div>
+
+    <form (ngSubmit)="guardarCambios()">
+      <label for="nombre">Nombre completo</label>
+      <input
+        id="nombre"
+        type="text"
+        [value]="nombre()"
+        (input)="nombre.set($any($event.target).value)"
+      />
+
+      <label for="correo">Correo electrónico</label>
+      <input id="correo" type="email" [value]="correo()" disabled />
+
+      @if (rol() === 'vendedor') {
+        <label for="nombreNegocio">Nombre del negocio</label>
+        <input
+          id="nombreNegocio"
+          type="text"
+          [value]="nombreNegocio()"
+          (input)="nombreNegocio.set($any($event.target).value)"
+        />
+
+        <label for="nit">NIT</label>
+        <input
+          id="nit"
+          type="text"
+          [value]="nit()"
+          (input)="nit.set($any($event.target).value)"
+        />
+      }
+
+      <label for="nuevaContrasena">Nueva contraseña (opcional)</label>
+      <input
+        id="nuevaContrasena"
+        type="password"
+        placeholder="Dejar en blanco para no cambiar"
+        [value]="nuevaContrasena()"
+        (input)="nuevaContrasena.set($any($event.target).value)"
+      />
+
+      <label for="confirmarNuevaContrasena">Confirmar nueva contraseña</label>
+      <input
+        id="confirmarNuevaContrasena"
+        type="password"
+        [value]="confirmarNuevaContrasena()"
+        (input)="confirmarNuevaContrasena.set($any($event.target).value)"
+      />
+
+      <button type="submit" [disabled]="cargando()">
+        {{ cargando() ? 'Guardando...' : 'Guardar cambios' }}
+      </button>
+    </form>
+  </div>
+</div>

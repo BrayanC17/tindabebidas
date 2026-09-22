@@ -175,3 +175,158 @@
   cursor: wait;
 }
 
+.usuario-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.foto-usuario-navbar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.icono-usuario-navbar {
+  font-size: 1.5rem;
+  color: #888;
+}
+
+.usuario-nombre {
+  font-weight: 500;
+  color: #333;
+}
+
+.menu-config-wrapper {
+  position: relative;
+}
+
+.btn-config {
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #666;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btn-config:hover {
+  background: var(--color-crema);
+  color: var(--color-vino);
+}
+
+.menu-config-dropdown {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  min-width: 160px;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.menu-config-dropdown a,
+.menu-config-dropdown button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  background: none;
+  text-align: left;
+  font-size: 0.9rem;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.menu-config-dropdown a:hover,
+.menu-config-dropdown button:hover {
+  background: #f5f5f5;
+}.usuario-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.foto-usuario-navbar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.icono-usuario-navbar {
+  font-size: 1.5rem;
+  color: #888;
+}
+
+.usuario-nombre {
+  font-weight: 500;
+  color: #333;
+}
+
+.menu-config-wrapper {
+  position: relative;
+}
+
+.btn-config {
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #666;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btn-config:hover {
+  background: var(--color-crema);
+  color: var(--color-vino);
+}
+
+.menu-config-dropdown {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  min-width: 160px;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.menu-config-dropdown a,
+.menu-config-dropdown button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  background: none;
+  text-align: left;
+  font-size: 0.9rem;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.menu-config-dropdown a:hover,
+.menu-config-dropdown button:hover {
+  background: #f5f5f5;
+}

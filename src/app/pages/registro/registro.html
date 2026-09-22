@@ -7,24 +7,52 @@
       <p class="registro-error">{{ error() }}</p>
     }
 
-    <div class="rol-selector">
+  <div class="rol-selector">
+    <button
+      type="button"
+      class="rol-card"
+      [class.activo]="rol() === 'cliente'"
+      (click)="seleccionarRol('cliente')"
+    >
+      <i class="fa-solid fa-cart-shopping rol-icono"></i>
+      <span class="rol-titulo">Soy cliente</span>
+      <span class="rol-descripcion">Quiero comprar bebidas</span>
+    </button>
+
       <button
-        type="button"
-        class="rol-btn"
-        [class.activo]="rol() === 'cliente'"
-        (click)="seleccionarRol('cliente')"
-      >
-        🛒 Quiero comprar
-      </button>
-      <button
-        type="button"
-        class="rol-btn"
-        [class.activo]="rol() === 'vendedor'"
-        (click)="seleccionarRol('vendedor')"
-      >
-        🏪 Quiero vender
-      </button>
-    </div>
+      type="button"
+      class="rol-card"
+      [class.activo]="rol() === 'vendedor'"
+      (click)="seleccionarRol('vendedor')"
+    >
+      <i class="fa-solid fa-shop rol-icono"></i>
+      <span class="rol-titulo">Soy vendedor</span>
+      <span class="rol-descripcion">Quiero publicar mis productos</span>
+    </button>
+  </div>
+
+    @if (rol() === 'vendedor') {
+      <label for="nombreNegocio">Nombre de tu negocio</label>
+      <br />
+      <input
+        id="nombreNegocio"
+        type="text"
+        placeholder="Ej: Licores El Buen Trago"
+        [value]="nombreNegocio()"
+        (input)="nombreNegocio.set($any($event.target).value)"
+      />
+
+      <br />
+      <label for="nit">NIT de la empresa</label>
+      <br />
+      <input
+        id="nit"
+        type="text"
+        placeholder="Ej: 900123456-7"
+        [value]="nit()"
+        (input)="nit.set($any($event.target).value)"
+      />
+    }
 
     <form (ngSubmit)="registrar()">
       <label for="nombre">Nombre completo</label>

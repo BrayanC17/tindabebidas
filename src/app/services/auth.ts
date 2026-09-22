@@ -10,7 +10,8 @@ import {
   Firestore,
   doc,
   setDoc,
-  getDoc
+  getDoc,
+  updateDoc
 } from '@angular/fire/firestore';
 
 export interface DatosUsuario {
@@ -18,6 +19,9 @@ export interface DatosUsuario {
   correo: string;
   rol: 'cliente' | 'vendedor';
   mayorDeEdad: boolean;
+  nombreNegocio?: string;
+  nit?: string;
+  fotoPerfil?: string;
 }
 
 @Injectable({
@@ -41,6 +45,11 @@ export class AuthService {
     await setDoc(doc(this.firestore, 'usuarios', uid), datos);
 
     return credencial;
+  }
+
+  async actualizarDatosUsuario(uid: string, datos: Partial<DatosUsuario>) {
+    const referencia = doc(this.firestore, 'usuarios', uid);
+    await updateDoc(referencia, datos);
   }
 
   iniciarSesion(correo: string, contrasena: string) {

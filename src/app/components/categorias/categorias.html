@@ -1,5 +1,8 @@
 <section class="categorias">
-  <h2>¿Qué se te antoja?</h2>
+  <div class="categorias-titulo">
+    <h2>¿Qué <span class="resaltado">se te antoja</span> hoy?</h2>
+    <p class="categorias-subtitulo">Explora nuestras categorías y encuentra tu bebida perfecta</p>
+  </div>
 
   <div class="categorias-grid">
     @for (cat of categorias(); track cat.nombre) {
@@ -9,7 +12,7 @@
         [style.background]="cat.color"
         (click)="seleccionar(cat.nombre)"
       >
-        <span class="categoria-emoji">{{ cat.emoji }}</span>
+        <i class="categoria-icono" [class]="cat.icono"></i>
         <p class="categoria-nombre">{{ cat.nombre }}</p>
       </div>
     }

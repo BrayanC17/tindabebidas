@@ -18,6 +18,8 @@ export class Navbar implements OnInit {
   nombreUsuario = signal<string | null>(null);
   rolUsuario = signal<'cliente' | 'vendedor' | null>(null);
   cargandoUbicacion = signal(false);
+  fotoPerfilUsuario = signal<string | null>(null);
+  menuConfigAbierto = signal(false);
 
   ngOnInit() {
     this.authService.usuarioActual$.subscribe(async (usuario) => {
@@ -25,6 +27,8 @@ export class Navbar implements OnInit {
         const datos = await this.authService.obtenerDatosUsuario(usuario.uid);
         this.nombreUsuario.set(datos?.nombre ?? usuario.email);
         this.rolUsuario.set(datos?.rol ?? null);
+        this.fotoPerfilUsuario.set(datos?.fotoPerfil ?? null);
+
       } else {
         this.nombreUsuario.set(null);
         this.rolUsuario.set(null);
@@ -61,6 +65,11 @@ export class Navbar implements OnInit {
     } finally {
       this.cargandoUbicacion.set(false);
     }
+
+  }
+
+  toggleMenuConfig() {
+    this.menuConfigAbierto.set(!this.menuConfigAbierto());
   }
 
   cerrarSesion() {

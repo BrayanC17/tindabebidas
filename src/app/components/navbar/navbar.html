@@ -21,18 +21,43 @@
 
   <div class="navbar-right">
   @if (nombreUsuario()) {
-    <span class="usuario-nombre">👤 {{ nombreUsuario() }}</span>
-
-    @if (rolUsuario() === 'vendedor') {
-      <a routerLink="/admin" class="link-admin">🏪 Mi panel</a>
+  <div class="usuario-info">
+    @if (fotoPerfilUsuario()) {
+      <img [src]="fotoPerfilUsuario()" alt="Perfil" class="foto-usuario-navbar" />
+    } @else {
+      <i class="fa-solid fa-circle-user icono-usuario-navbar"></i>
     }
+    <span class="usuario-nombre">{{ nombreUsuario() }}</span>
+  </div>
 
-    <button class="btn-cerrar-sesion" (click)="cerrarSesion()">Salir</button>
-  } @else {
-    <a routerLink="/login" class="ingreso">
-      <span class="icono-usuario"><i class="fa-solid fa-user"></i></span>
+  @if (rolUsuario() === 'vendedor') {
+    <a routerLink="/admin" class="link-admin">
+      <i class="fa-solid fa-shop"></i> Mi panel
     </a>
   }
+
+  <div class="menu-config-wrapper">
+    <button class="btn-config" (click)="toggleMenuConfig()">
+      <i class="fa-solid fa-gear"></i>
+    </button>
+
+    @if (menuConfigAbierto()) {
+      <div class="menu-config-dropdown">
+        <a routerLink="/perfil" (click)="menuConfigAbierto.set(false)">
+          <i class="fa-solid fa-user-pen"></i> Editar perfil
+        </a>
+        <button (click)="cerrarSesion()">
+          <i class="fa-solid fa-right-from-bracket"></i> Salir
+        </button>
+      </div>
+    }
+  </div>
+} @else {
+  <a routerLink="/login" class="ingreso">
+    <span class="icono-usuario"><i class="fa-solid fa-user"></i></span>
+    Ingreso
+  </a>
+}
   <span class="carrito"><i class="fa-solid fa-cart-shopping"></i></span>
 </div>
 </nav>

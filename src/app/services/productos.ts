@@ -3,7 +3,9 @@ import {
   Firestore,
   collection,
   addDoc,
-  collectionData
+  collectionData,
+  query,
+  where
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
@@ -14,6 +16,8 @@ export interface Producto {
   descripcion: string;
   imagenUrl: string;
   stock: number;
+  vendedorUid: string;
+  nombreNegocio: string;
 }
 
 @Injectable({
@@ -29,5 +33,10 @@ export class ProductosService {
 
   obtenerProductos(): Observable<Producto[]> {
     return collectionData(this.coleccion) as Observable<Producto[]>;
+  }
+
+  obtenerProductosPorVendedor(uid: string): Observable<Producto[]> {
+    const consulta = query(this.coleccion, where('vendedorUid', '==', uid));
+    return collectionData(consulta) as Observable<Producto[]>;
   }
 }

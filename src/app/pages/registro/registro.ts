@@ -19,6 +19,8 @@ export class Registro {
   confirmarContrasena = signal('');
   rol = signal<'cliente' | 'vendedor'>('cliente');
   mayorDeEdad = signal(false);
+  nombreNegocio = signal('');
+  nit = signal('');
 
   error = signal('');
   cargando = signal(false);
@@ -30,13 +32,10 @@ export class Registro {
   async registrar() {
     this.error.set('');
 
-    alert('Botón presionado, iniciando registro...');
-    this.error.set('');
-
     if (this.contrasena().length < 6) {
-    this.error.set('La contraseña debe tener al menos 6 caracteres');
-    return;
-  }
+      this.error.set('La contraseña debe tener al menos 6 caracteres');
+      return;
+    }
 
     if (this.contrasena() !== this.confirmarContrasena()) {
       this.error.set('Las contraseñas no coinciden');
@@ -48,9 +47,12 @@ export class Registro {
       return;
     }
 
+    if (this.rol() === 'vendedor' && (!this.nombreNegocio() || !this.nit())) {
+      this.error.set('Ingresa el nombre y NIT de tu negocio');
+      return;
+    }
+
     this.cargando.set(true);
-
-
 
     try {
       await this.authService.registrar(
@@ -59,6 +61,8 @@ export class Registro {
           correo: this.correo(),
           rol: this.rol(),
           mayorDeEdad: this.mayorDeEdad(),
+          nombreNegocio: this.rol() === 'vendedor' ? this.nombreNegocio() : undefined,
+          nit: this.rol() === 'vendedor' ? this.nit() : undefined,
         },
         this.contrasena()
       );
