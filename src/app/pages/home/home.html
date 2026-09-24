@@ -1,2 +1,6 @@
 <app-hero></app-hero>
-<app-categorias></app-categorias>
+<app-categorias (categoriaElegida)="categoriaSeleccionada.set($event)"></app-categorias>
+
+@if (categoriaSeleccionada()) {
+  <app-lista-productos [categoria]="categoriaSeleccionada()!"></app-lista-productos>
+}

@@ -18,6 +18,13 @@
       >
         ➕ Agregar producto
       </button>
+      <button
+        class="menu-item"
+        [class.activo]="vistaActual() === 'ventas'"
+        (click)="cambiarVista('ventas')"
+      >
+        💰 Ventas
+      </button>
     </nav>
   </aside>
 
@@ -44,6 +51,32 @@
         }
       </div>
     }
+
+    @if (vistaActual() === 'ventas') {
+  <h1>Ventas</h1>
+
+  <div class="ventas-lista">
+    @for (pedido of pedidos$ | async; track pedido.id) {
+      <div class="venta-card">
+        @if (pedido.imagenProducto) {
+          <img [src]="pedido.imagenProducto" [alt]="pedido.nombreProducto" />
+        }
+
+        <div class="venta-info">
+          <h3>{{ pedido.nombreProducto }}</h3>
+          <p>Comprador: {{ pedido.compradorNombre }}</p>
+          <p>Cantidad: {{ pedido.cantidad }}</p>
+          <p class="venta-total">Total: ${{ pedido.total }}</p>
+          <span class="venta-estado" [class]="'estado-' + pedido.estado">
+            {{ pedido.estado }}
+          </span>
+        </div>
+      </div>
+    } @empty {
+      <p class="sin-productos">Todavía no tienes ventas registradas.</p>
+    }
+  </div>
+}
 
     @if (vistaActual() === 'agregar') {
       <h1>Agregar producto</h1>

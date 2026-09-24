@@ -1,0 +1,221 @@
+<div class="carrito-pagina">
+  <a routerLink="/" class="volver">
+    <i class="fa-solid fa-arrow-left"></i> Seguir comprando
+  </a>
+
+  @if (items().length === 0) {
+    <div class="carrito-vacio">
+      <i class="fa-solid fa-cart-shopping carrito-vacio-icono"></i>
+      <p>Todavía no has agregado productos.</p>
+      <a routerLink="/" class="btn-volver">Ver bebidas</a>
+    </div>
+  } @else {
+    <div class="carrito-layout">
+      <!-- Columna izquierda: productos agrupados por negocio -->
+      <div class="carrito-productos">
+        @for (grupo of grupos(); track grupo.nombreNegocio) {
+          <div class="grupo-negocio">
+            <div class="grupo-header">
+              <i class="fa-solid fa-shop"></i>
+              <h3>Productos de {{ grupo.nombreNegocio }}</h3>
+            </div>
+
+            @for (item of grupo.items; track item.producto.id) {
+              <div class="carrito-item">
+                <img
+                  [src]="item.producto.imagenUrl || 'logo.png'"
+                  [alt]="item.producto.nombre"
+                  class="carrito-item-imagen"
+                />
+
+                <div class="carrito-item-info">
+                  <p class="carrito-item-nombre">{{ item.producto.nombre }}</p>
+                  <div class="carrito-item-cantidad">
+                    <button (click)="disminuirCantidad(item.producto.id!, item.cantidad)">-</button>
+                    <span>{{ item.cantidad }}</span>
+                    <button (click)="aumentarCantidad(item.producto.id!, item.cantidad)">+</button>
+                  </div>
+                </div>
+
+                <p class="carrito-item-precio">$ {{ item.producto.precio * item.cantidad | number }}</p>
+
+                <button
+                  class="carrito-item-quitar"
+                  (click)="quitarProducto(item.producto.id!)"
+                  aria-label="Quitar producto"
+                >
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            }
+
+            <p class="grupo-subtotal">Subtotal: $ {{ grupo.subtotal | number }}</p>
+          </div>
+        }
+      </div>
+
+      <!-- Columna derecha: resumen de compra -->
+      <aside class="carrito-resumen">
+        <h3>Resumen de compra</h3>
+
+        <div class="resumen-linea">
+          <span>Productos ({{ carritoService.cantidadTotal() }})</span>
+          <span>$ {{ carritoService.totalPagar() | number }}</span>
+        </div>
+
+        <div class="resumen-total">
+          <span>Total</span>
+          <strong>$ {{ carritoService.totalPagar() | number }}</strong>
+        </div>
+
+        <button class="btn-pagar" (click)="abrirModalPago()">
+          Realizar pago
+        </button>
+      </aside>
+    </div>
+  }
+
+  <!-- ================= MODAL DE CHECKOUT ================= -->
+  @if (paso() !== 'cerrado') {
+    <div class="checkout-overlay" (click)="cerrarModal()">
+      <div class="checkout-modal" (click)="$event.stopPropagation()">
+
+        <!-- Paso 1: elegir método de pago -->
+        @if (paso() === 'metodo') {
+          <div class="checkout-header">
+            <h3>¿Cómo quieres pagar?</h3>
+            <button class="checkout-cerrar" (click)="cerrarModal()"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+
+          @if (metodosGuardados().length > 0) {
+            <p class="checkout-subtitulo">Tus métodos guardados</p>
+            <div class="metodos-guardados">
+              @for (metodo of metodosGuardados(); track metodo.id) {
+                <button class="metodo-guardado" (click)="elegirMetodoGuardado(metodo)">
+                  <i
+                    class="fa-solid"
+                    [class.fa-credit-card]="metodo.tipo === 'tarjeta'"
+                    [class.fa-money-bill-wave]="metodo.tipo === 'efectivo'"
+                    [class.fa-building-columns]="metodo.tipo === 'pse'"
+                  ></i>
+                  <span>{{ metodo.alias }}</span>
+                </button>
+              }
+            </div>
+          }
+
+          <p class="checkout-subtitulo">Nuevo método</p>
+          <div class="metodos-nuevos">
+            <button class="metodo-icono" (click)="elegirTipoMetodo('tarjeta')">
+              <i class="fa-solid fa-credit-card"></i>
+              <span>Tarjeta</span>
+            </button>
+            <button class="metodo-icono" (click)="elegirTipoMetodo('efectivo')">
+              <i class="fa-solid fa-money-bill-wave"></i>
+              <span>Efectivo</span>
+            </button>
+            <button class="metodo-icono" (click)="elegirTipoMetodo('pse')">
+              <i class="fa-solid fa-building-columns"></i>
+              <span>PSE</span>
+            </button>
+          </div>
+        }
+
+        <!-- Paso 1b: formulario de tarjeta nueva -->
+        @if (paso() === 'nuevaTarjeta') {
+          <div class="checkout-header">
+            <button class="checkout-volver" (click)="volverAMetodos()"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>Agregar tarjeta</h3>
+            <button class="checkout-cerrar" (click)="cerrarModal()"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+
+          <label>Número de tarjeta</label>
+          <input
+            type="text"
+            placeholder="0000 0000 0000 0000"
+            maxlength="19"
+            [value]="numeroTarjeta()"
+            (input)="numeroTarjeta.set($any($event.target).value)"
+          />
+
+          <label>Nombre del titular</label>
+          <input
+            type="text"
+            placeholder="Como aparece en la tarjeta"
+            [value]="titularTarjeta()"
+            (input)="titularTarjeta.set($any($event.target).value)"
+          />
+
+          <label class="checkout-checkbox">
+            <input
+              type="checkbox"
+              [checked]="guardarTarjeta()"
+              (change)="guardarTarjeta.set($any($event.target).checked)"
+            />
+            Guardar esta tarjeta para próximas compras
+          </label>
+
+          <button class="btn-pagar" (click)="confirmarTarjeta()">Continuar</button>
+        }
+
+        <!-- Paso 2: tipo de entrega -->
+        @if (paso() === 'entrega') {
+          <div class="checkout-header">
+            <button class="checkout-volver" (click)="volverAMetodos()"><i class="fa-solid fa-arrow-left"></i></button>
+            <h3>¿Cómo quieres recibirlo?</h3>
+            <button class="checkout-cerrar" (click)="cerrarModal()"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+
+          <div class="entrega-opciones">
+            <button
+              class="entrega-opcion"
+              [class.activa]="tipoEntrega() === 'domicilio'"
+              (click)="tipoEntrega.set('domicilio')"
+            >
+              <i class="fa-solid fa-motorcycle"></i>
+              <span>A domicilio</span>
+            </button>
+            <button
+              class="entrega-opcion"
+              [class.activa]="tipoEntrega() === 'recoger'"
+              (click)="tipoEntrega.set('recoger')"
+            >
+              <i class="fa-solid fa-store"></i>
+              <span>Pasar a recoger</span>
+            </button>
+          </div>
+
+          @if (tipoEntrega() === 'recoger') {
+            <label>Observación (opcional)</label>
+            <textarea
+              rows="2"
+              placeholder="Ej: paso a las 6pm, pregunto por..."
+              [value]="observacion()"
+              (input)="observacion.set($any($event.target).value)"
+            ></textarea>
+          }
+
+          <button class="btn-pagar" [disabled]="procesandoCompra()" (click)="confirmarPedido()">
+            {{ procesandoCompra() ? 'Procesando...' : 'Confirmar pedido' }}
+          </button>
+        }
+
+        <!-- Paso 3: confirmación -->
+        @if (paso() === 'confirmado') {
+          <div class="checkout-confirmado">
+            <i class="fa-solid fa-circle-check"></i>
+            <h3>¡Pedido realizado!</h3>
+
+            @if (tipoEntrega() === 'domicilio') {
+              <p>Tu pedido quedó <strong>pendiente</strong> para que un repartidor te lo lleve.</p>
+            } @else {
+              <p>Tu pedido quedó <strong>pendiente</strong> para que lo recojas en el negocio.</p>
+            }
+
+            <button class="btn-pagar" (click)="cerrarConfirmacion()">Listo</button>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

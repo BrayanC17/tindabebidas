@@ -1,0 +1,92 @@
+<section class="lista-productos">
+  <h2 class="lista-productos-titulo">{{ titulo() }}</h2>
+
+  @if (cargando()) {
+    <p class="lista-productos-estado">Cargando productos...</p>
+  } @else if (productos().length === 0) {
+    <p class="lista-productos-estado">
+      @if (terminoBusqueda().trim()) {
+        No encontramos productos para "<strong>{{ terminoBusqueda() }}</strong>".
+      } @else {
+        Todavía no hay productos en <strong>{{ categoria() }}</strong>. ¡Vuelve pronto!
+      }
+    </p>
+  } @else {
+    <div class="productos-grid">
+      @for (producto of productos(); track producto.id) {
+        <article class="producto-card" (click)="abrirDetalle(producto)">
+          <div class="producto-imagen-wrapper">
+            <img
+              [src]="producto.imagenUrl || 'logo.png'"
+              [alt]="producto.nombre"
+              class="producto-imagen"
+            />
+
+            @if (producto.logoNegocio) {
+              <img
+                [src]="producto.logoNegocio"
+                [alt]="producto.nombreNegocio"
+                class="negocio-logo-badge"
+              />
+            } @else {
+              <span class="negocio-logo-badge negocio-logo-fallback">
+                <i class="fa-solid fa-shop"></i>
+              </span>
+            }
+
+            <button
+              class="btn-agregar"
+              [class.agregado]="productoRecienAgregado() === producto.id"
+              (click)="$event.stopPropagation(); agregarAlCarrito(producto)"
+              [attr.aria-label]="'Agregar ' + producto.nombre + ' al carrito'"
+            >
+              @if (productoRecienAgregado() === producto.id) {
+                <i class="fa-solid fa-check"></i>
+              } @else {
+                <i class="fa-solid fa-plus"></i>
+              }
+            </button>
+          </div>
+
+          <div class="producto-info">
+            <p class="producto-nombre">{{ producto.nombre }}</p>
+            <p class="producto-negocio">{{ producto.nombreNegocio }}</p>
+            <p class="producto-precio">$ {{ producto.precio | number }}</p>
+          </div>
+        </article>
+      }
+    </div>
+  }
+
+  <!-- Ventana de detalle del producto: aparece al hacer clic en la tarjeta -->
+  @if (productoSeleccionado(); as producto) {
+    <div class="detalle-overlay" (click)="cerrarDetalle()">
+      <div class="detalle-modal" (click)="$event.stopPropagation()">
+        <button class="detalle-cerrar" (click)="cerrarDetalle()" aria-label="Cerrar">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <img
+          [src]="producto.imagenUrl || 'logo.png'"
+          [alt]="producto.nombre"
+          class="detalle-imagen"
+        />
+
+        <div class="detalle-info">
+          <p class="detalle-nombre">{{ producto.nombre }}</p>
+          <p class="detalle-negocio">
+            @if (producto.logoNegocio) {
+              <img [src]="producto.logoNegocio" [alt]="producto.nombreNegocio" class="detalle-negocio-logo" />
+            }
+            {{ producto.nombreNegocio }}
+          </p>
+          <p class="detalle-precio">$ {{ producto.precio | number }}</p>
+
+          <button class="btn-agregar-detalle" (click)="agregarDesdeDetalle(producto)">
+            Añadir a carrito
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</section>

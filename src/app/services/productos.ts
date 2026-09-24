@@ -5,11 +5,15 @@ import {
   addDoc,
   collectionData,
   query,
-  where
+  where,
+  doc,
+  updateDoc,
+  increment
 } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 export interface Producto {
+  id?: string;
   nombre: string;
   categoria: string;
   precio: number;
@@ -18,6 +22,7 @@ export interface Producto {
   stock: number;
   vendedorUid: string;
   nombreNegocio: string;
+  logoNegocio?: string;
 }
 
 @Injectable({
@@ -32,11 +37,35 @@ export class ProductosService {
   }
 
   obtenerProductos(): Observable<Producto[]> {
-    return collectionData(this.coleccion) as Observable<Producto[]>;
+    return collectionData(this.coleccion, { idField: 'id' }) as Observable<Producto[]>;
   }
 
   obtenerProductosPorVendedor(uid: string): Observable<Producto[]> {
     const consulta = query(this.coleccion, where('vendedorUid', '==', uid));
-    return collectionData(consulta) as Observable<Producto[]>;
+    return collectionData(consulta, { idField: 'id' }) as Observable<Producto[]>;
+  }
+
+  obtenerProductosPorCategoria(categoria: string): Observable<Producto[]> {
+    const consulta = query(this.coleccion, where('categoria', '==', categoria));
+    return collectionData(consulta, { idField: 'id' }) as Observable<Producto[]>;
+  }
+
+  descontarStock(productoId: string, cantidad: number) {
+    const referencia = doc(this.firestore, 'productos', productoId);
+    return updateDoc(referencia, {
+      stock: increment(-cantidad)
+    });
+  }
+
+  // Firestore no tiene búsqueda de texto libre; traemos todos los productos
+  // y filtramos aquí por nombre. Funciona bien mientras el catálogo no sea enorme.
+  buscarProductosPorNombre(termino: string): Observable<Producto[]> {
+    const terminoNormalizado = termino.trim().toLowerCase();
+
+    return this.obtenerProductos().pipe(
+      map((productos) =>
+        productos.filter((p) => p.nombre.toLowerCase().includes(terminoNormalizado))
+      )
+    );
   }
 }

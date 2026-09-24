@@ -1,8 +1,9 @@
 import { Component, signal, inject, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { Geolocation } from '@capacitor/geolocation';
 import { AuthService } from '../../services/auth';
 import { UbicacionService } from '../../services/ubicacion';
+import { CarritoService } from '../../services/carrito';
 
 @Component({
   selector: 'app-navbar',
@@ -12,7 +13,9 @@ import { UbicacionService } from '../../services/ubicacion';
 })
 export class Navbar implements OnInit {
   private authService = inject(AuthService);
+  private router = inject(Router);
   ubicacionService = inject(UbicacionService);
+  carritoService = inject(CarritoService);
 
   busqueda = signal('');
   nombreUsuario = signal<string | null>(null);
@@ -70,6 +73,13 @@ export class Navbar implements OnInit {
 
   toggleMenuConfig() {
     this.menuConfigAbierto.set(!this.menuConfigAbierto());
+  }
+
+  buscar() {
+    const termino = this.busqueda().trim();
+    if (!termino) return;
+
+    this.router.navigate(['/buscar'], { queryParams: { q: termino } });
   }
 
   cerrarSesion() {

@@ -1,9 +1,9 @@
 <nav class="navbar">
   <div class="navbar-left">
-    <div class="logo-container">
+    <a routerLink="/" class="logo-container">
       <img src="logo.png" alt="TinBebidas" class="logo-img" />
       <span class="logo-texto">TinBebidas</span>
-    </div>
+    </a>
     <button class="ubicacion-btn" (click)="detectarUbicacion()" [disabled]="cargandoUbicacion()">
       <i class="fa-solid fa-location-dot"></i>
       {{ cargandoUbicacion() ? 'Detectando...' : ubicacionService.ciudad() }}
@@ -14,8 +14,9 @@
         placeholder="Buscar productos..."
         [value]="busqueda()"
         (input)="busqueda.set($any($event.target).value)"
+        (keyup.enter)="buscar()"
       />
-      <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+      <span class="search-icon" (click)="buscar()"><i class="fa-solid fa-magnifying-glass"></i></span>
     </div>
   </div>
 
@@ -58,6 +59,11 @@
     Ingreso
   </a>
 }
-  <span class="carrito"><i class="fa-solid fa-cart-shopping"></i></span>
+  <a routerLink="/carrito" class="carrito">
+    <i class="fa-solid fa-cart-shopping"></i>
+    @if (carritoService.cantidadTotal() > 0) {
+      <span class="carrito-badge">{{ carritoService.cantidadTotal() }}</span>
+    }
+  </a>
 </div>
 </nav>

@@ -2,6 +2,7 @@ import { Component, signal, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AsyncPipe } from '@angular/common';
 import { ProductosService, Producto } from '../../services/productos';
+import { PedidosService, Pedido } from '../../services/pedidos';
 import { AuthService } from '../../services/auth';
 import { archivoABase64Comprimido } from '../../utils/imagen';
 import { Observable, of } from 'rxjs';
@@ -15,16 +16,19 @@ import { CamaraService } from '../../services/camara';
 })
 export class Admin implements OnInit {
   private productosService = inject(ProductosService);
+  private pedidosService = inject(PedidosService);
   private authService = inject(AuthService);
   private camaraService = inject(CamaraService);
 
-  vistaActual = signal<'lista' | 'agregar'>('lista');
+  vistaActual = signal<'lista' | 'agregar' | 'ventas'>('lista');
   menuAbierto = signal(false);
 
   productos$: Observable<Producto[]> = of([]);
+  pedidos$: Observable<Pedido[]> = of([]);
 
   uidActual = signal<string | null>(null);
   nombreNegocioActual = signal<string>('');
+  logoNegocioActual = signal<string>('');
 
   nombre = signal('');
   categoria = signal('Cervezas');
@@ -47,13 +51,15 @@ export class Admin implements OnInit {
         this.uidActual.set(usuario.uid);
         const datos = await this.authService.obtenerDatosUsuario(usuario.uid);
         this.nombreNegocioActual.set(datos?.nombreNegocio ?? 'Mi negocio');
+        this.logoNegocioActual.set(datos?.fotoPerfil ?? '');
 
         this.productos$ = this.productosService.obtenerProductosPorVendedor(usuario.uid);
+        this.pedidos$ = this.pedidosService.obtenerPedidosPorVendedor(usuario.uid);
       }
     });
   }
 
-  cambiarVista(vista: 'lista' | 'agregar') {
+  cambiarVista(vista: 'lista' | 'agregar' | 'ventas') {
     this.vistaActual.set(vista);
     this.menuAbierto.set(false);
   }
@@ -128,6 +134,7 @@ export class Admin implements OnInit {
         stock: this.stock()!,
         vendedorUid: this.uidActual()!,
         nombreNegocio: this.nombreNegocioActual(),
+        logoNegocio: this.logoNegocioActual(),
       });
 
       this.mensaje.set('¡Producto agregado con éxito!');

@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, output, OnInit } from '@angular/core';
 
 interface Categoria {
   nombre: string;
@@ -12,7 +12,7 @@ interface Categoria {
   templateUrl: './categorias.html',
   styleUrl: './categorias.css'
 })
-export class Categorias {
+export class Categorias implements OnInit {
   categorias = signal<Categoria[]>([
     { nombre: 'Cervezas', icono: 'fa-solid fa-beer-mug-empty', color: '#c9992e' },
     { nombre: 'Vinos', icono: 'fa-solid fa-wine-glass', color: '#5c1a1a' },
@@ -28,8 +28,16 @@ export class Categorias {
 
   seleccionada = signal<string>('');
 
+  // Avisa al componente padre (Home) qué categoría se debe mostrar en la lista de productos
+  categoriaElegida = output<string>();
+
+  ngOnInit() {
+    // Selecciona la primera categoría por defecto para que la lista no arranque vacía
+    this.seleccionar(this.categorias()[0].nombre);
+  }
+
   seleccionar(nombre: string) {
     this.seleccionada.set(nombre);
-    console.log('Categoría elegida:', nombre);
+    this.categoriaElegida.emit(nombre);
   }
 }
