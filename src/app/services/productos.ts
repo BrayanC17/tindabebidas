@@ -8,6 +8,7 @@ import {
   where,
   doc,
   updateDoc,
+  deleteDoc,
   increment
 } from '@angular/fire/firestore';
 import { Observable, map } from 'rxjs';
@@ -67,5 +68,16 @@ export class ProductosService {
         productos.filter((p) => p.nombre.toLowerCase().includes(terminoNormalizado))
       )
     );
+  }
+
+  // Actualiza cualquier subconjunto de campos de un producto existente
+  actualizarProducto(productoId: string, cambios: Partial<Producto>) {
+    const referencia = doc(this.firestore, 'productos', productoId);
+    return updateDoc(referencia, cambios);
+  }
+
+  eliminarProducto(productoId: string) {
+    const referencia = doc(this.firestore, 'productos', productoId);
+    return deleteDoc(referencia);
   }
 }

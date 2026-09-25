@@ -36,7 +36,7 @@
       <h1>Mis productos</h1>
 
       <div class="productos-grid">
-        @for (producto of productos$ | async; track producto.nombre) {
+        @for (producto of productos$ | async; track producto.id) {
           <div class="producto-card">
             @if (producto.imagenUrl) {
               <img [src]="producto.imagenUrl" [alt]="producto.nombre" />
@@ -45,6 +45,15 @@
             <p class="producto-categoria">{{ producto.categoria }}</p>
             <p class="producto-precio">${{ producto.precio }}</p>
             <p class="producto-stock">Stock: {{ producto.stock }}</p>
+
+            <div class="producto-acciones">
+              <button class="btn-editar" (click)="editarProducto(producto)">
+                ✏️ Editar
+              </button>
+              <button class="btn-eliminar" (click)="eliminarProducto(producto)">
+                🗑️ Eliminar
+              </button>
+            </div>
           </div>
         } @empty {
           <p class="sin-productos">Aún no has agregado productos.</p>
@@ -53,33 +62,44 @@
     }
 
     @if (vistaActual() === 'ventas') {
-  <h1>Ventas</h1>
+      <h1>Ventas</h1>
 
-  <div class="ventas-lista">
-    @for (pedido of pedidos$ | async; track pedido.id) {
-      <div class="venta-card">
-        @if (pedido.imagenProducto) {
-          <img [src]="pedido.imagenProducto" [alt]="pedido.nombreProducto" />
+      <div class="ventas-lista">
+        @for (pedido of pedidos$ | async; track pedido.id) {
+          <div class="venta-card">
+            @if (pedido.imagenProducto) {
+              <img [src]="pedido.imagenProducto" [alt]="pedido.nombreProducto" />
+            }
+
+            <div class="venta-info">
+              <h3>{{ pedido.nombreProducto }}</h3>
+              <p>Comprador: {{ pedido.compradorNombre }}</p>
+              <p>Cantidad: {{ pedido.cantidad }}</p>
+              <p class="venta-total">Total: ${{ pedido.total }}</p>
+
+              <span class="venta-estado" [class]="'estado-' + pedido.estado">
+                {{ pedido.estado }}
+              </span>
+
+              <select
+                class="selector-estado"
+                [value]="pedido.estado"
+                (change)="cambiarEstadoPedido(pedido, $any($event.target).value)"
+              >
+                <option value="pendiente">Pendiente</option>
+                <option value="entregado">Entregado</option>
+                <option value="cancelado">Cancelado</option>
+              </select>
+            </div>
+          </div>
+        } @empty {
+          <p class="sin-productos">Todavía no tienes ventas registradas.</p>
         }
-
-        <div class="venta-info">
-          <h3>{{ pedido.nombreProducto }}</h3>
-          <p>Comprador: {{ pedido.compradorNombre }}</p>
-          <p>Cantidad: {{ pedido.cantidad }}</p>
-          <p class="venta-total">Total: ${{ pedido.total }}</p>
-          <span class="venta-estado" [class]="'estado-' + pedido.estado">
-            {{ pedido.estado }}
-          </span>
-        </div>
       </div>
-    } @empty {
-      <p class="sin-productos">Todavía no tienes ventas registradas.</p>
     }
-  </div>
-}
 
     @if (vistaActual() === 'agregar') {
-      <h1>Agregar producto</h1>
+      <h1>{{ productoEditandoId() ? 'Editar producto' : 'Agregar producto' }}</h1>
 
       @if (mensaje()) {
         <p class="admin-mensaje" [class.exito]="mensaje().includes('éxito')">
@@ -87,7 +107,7 @@
         </p>
       }
 
-      <form (ngSubmit)="agregarProducto()" class="form-producto">
+      <form (ngSubmit)="guardarProducto()" class="form-producto">
         <label for="nombre">Nombre del producto</label>
         <input
           id="nombre"
@@ -180,7 +200,7 @@
   @if (imagenBase64()) {
     <img [src]="imagenBase64()" alt="Vista previa" class="preview-imagen" />
   }
-} @else {
+} @else if (modoImagen() === 'url') {
   <input
     id="imagenUrlTexto"
     type="text"
@@ -203,9 +223,17 @@
           (input)="descripcion.set($any($event.target).value)"
         ></textarea>
 
-        <button type="submit" [disabled]="cargando()">
-          {{ cargando() ? 'Guardando...' : 'Agregar producto' }}
-        </button>
+        <div class="form-botones">
+          @if (productoEditandoId()) {
+            <button type="button" class="btn-cancelar" (click)="cancelarEdicion()">
+              Cancelar
+            </button>
+          }
+
+          <button type="submit" [disabled]="cargando()">
+            {{ cargando() ? 'Guardando...' : (productoEditandoId() ? 'Guardar cambios' : 'Agregar producto') }}
+          </button>
+        </div>
       </form>
     }
   </div>

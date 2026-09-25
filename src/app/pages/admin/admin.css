@@ -279,6 +279,74 @@
   color: #721c24;
 }
 
+.producto-acciones {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.btn-editar,
+.btn-eliminar {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.btn-editar {
+  background: var(--color-dorado);
+  color: white;
+}
+
+.btn-eliminar {
+  background: #fdecea;
+  color: #c0392b;
+}
+
+.btn-editar:hover,
+.btn-eliminar:hover {
+  opacity: 0.85;
+}
+
+/* Botones del formulario (agregar / editar producto) */
+.form-botones {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.form-botones button[type="submit"] {
+  flex: 1;
+}
+
+.btn-cancelar {
+  padding: 10px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  color: #555;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-cancelar:hover {
+  background: #f5f5f5;
+}
+.selector-estado {
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 0.85rem;
+  background: #fff;
+  cursor: pointer;
+  display: block;
+}
+
 /* Responsive: menú lateral se oculta en móvil, aparece botón hamburguesa */
 @media (max-width: 768px) {
   .admin-sidebar {

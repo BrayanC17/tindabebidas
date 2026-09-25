@@ -330,3 +330,55 @@
 .menu-config-dropdown button:hover {
   background: #f5f5f5;
 }
+
+@media (max-width: 1024px) {
+  .navbar {
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+
+  .navbar-search {
+    max-width: 220px;
+  }
+}
+
+@media (max-width: 820px) {
+  .navbar-search {
+    max-width: 160px;
+  }
+
+  .ubicacion-texto {
+    display: none;
+  }
+
+  .usuario-nombre {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    padding: 10px 12px;
+  }
+
+  .logo-texto {
+    display: none;
+  }
+
+  .navbar-search {
+    order: 3;
+    max-width: 100%;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .navbar-left,
+  .navbar-right {
+    gap: 10px;
+  }
+
+  .menu-config-dropdown {
+    right: 0;
+    left: auto;
+  }
+}

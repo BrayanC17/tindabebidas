@@ -6,7 +6,7 @@
     </a>
     <button class="ubicacion-btn" (click)="detectarUbicacion()" [disabled]="cargandoUbicacion()">
       <i class="fa-solid fa-location-dot"></i>
-      {{ cargandoUbicacion() ? 'Detectando...' : ubicacionService.ciudad() }}
+      <span class="ubicacion-texto">{{ cargandoUbicacion() ? 'Detectando...' : ubicacionService.ciudad() }}</span>
     </button>
     <div class="navbar-search">
       <input

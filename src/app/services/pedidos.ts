@@ -7,6 +7,8 @@ import {
   query,
   where,
   orderBy,
+  doc,
+  updateDoc,
   Timestamp
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
@@ -57,5 +59,10 @@ export class PedidosService {
       orderBy('fecha', 'desc')
     );
     return collectionData(consulta, { idField: 'id' }) as Observable<Pedido[]>;
+  }
+
+  actualizarEstadoPedido(pedidoId: string, estado: Pedido['estado']) {
+    const referencia = doc(this.firestore, 'pedidos', pedidoId);
+    return updateDoc(referencia, { estado });
   }
 }
